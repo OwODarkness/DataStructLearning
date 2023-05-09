@@ -4,9 +4,9 @@
  * @brief 单链表
  * @version 0.1
  * @date 2023-04-25
- * 
+ *
  * @copyright Copyright (c) 2023
- * 
+ *
  */
 #ifndef LINKLIST_H
 #define LINKLIST_H
@@ -31,7 +31,7 @@ namespace linklist
     L->next = nullptr;
   }
 
-  //头查法
+  //头插法
   bool HeadInsert(LinkList &L, ElementType e)
   {
     if (L == nullptr)
@@ -67,9 +67,9 @@ namespace linklist
   void CreateWithHeadInsert(LinkList L)
   {
     INDEX n = 0;
-    std::cout<< "please input the number of the original linklist elements" << std::endl;
+    std::cout << "please input the number of the original linklist elements" << std::endl;
     std::cin >> n;
-    for (int i = 0; i < n;i++)
+    for (int i = 0; i < n; i++)
     {
       int x;
       std::cin >> x;
@@ -82,11 +82,11 @@ namespace linklist
   //通过尾插法创建单链表
   void CreateWithTailInsert(LinkList L)
   {
-        INDEX n = 0;
-    std::cout<< "please input the number of the original linklist elements" << std::endl;
+    INDEX n = 0;
+    std::cout << "please input the number of the original linklist elements" << std::endl;
     std::cin >> n;
     LinkList p = L;
-    for (int i = 0; i < n;i++)
+    for (int i = 0; i < n; i++)
     {
       int x;
       std::cin >> x;
@@ -99,13 +99,13 @@ namespace linklist
   }
 
   //根据元素获取索引
-  bool GetIndexByElement(LinkList L, ElementType Target, INDEX& index)
+  bool GetIndexByElement(LinkList L, ElementType Target, INDEX &index)
   {
     LinkNode *s = L->next;
     INDEX count = 0;
-    while(s)
+    while (s)
     {
-      if(s->data = Target)
+      if (s->data = Target)
       {
         index = count;
         return true;
@@ -135,7 +135,7 @@ namespace linklist
   }
 
   //根据索引获取节点
-  bool GetLinkNodeByIndex(LinkList L, INDEX index, LinkNode*& Node)
+  bool GetLinkNodeByIndex(LinkList L, INDEX index, LinkNode *&Node)
   {
     LinkNode *s = L->next;
     INDEX count = 0;
@@ -155,10 +155,10 @@ namespace linklist
   }
 
   //设置节点元素值
-  bool SetElement(LinkList& L, INDEX index, ElementType Value)
+  bool SetElement(LinkList &L, INDEX index, ElementType Value)
   {
     LinkNode *N = nullptr;
-    if(!GetLinkNodeByIndex(L, index, N))
+    if (!GetLinkNodeByIndex(L, index, N))
     {
       return false;
     }
@@ -170,19 +170,19 @@ namespace linklist
   }
 
   //删除节点
-  void Delete(LinkList& L, INDEX index)
+  void Delete(LinkList &L, INDEX index)
   {
 
-    LinkNode* pre = L;
-    if(!pre)
+    LinkNode *pre = L;
+    if (!pre)
     {
       return;
     }
     LinkNode *s = L->next;
     INDEX count = 0;
-    while(s)
+    while (s)
     {
-      if(count == index)
+      if (count == index)
       {
         pre->next = s->next;
         free(s);
@@ -207,7 +207,7 @@ namespace linklist
     L->next = res;
   }
 
-  //删除单链表
+  //显示单链表
   void Display(LinkList L)
   {
     if (L == nullptr)
@@ -222,10 +222,53 @@ namespace linklist
     }
     std::cout << std::endl;
   }
+  //单链表长度
+  int Length(LinkList L)
+  {
+    int res = 0;
+    LinkNode *T = L->next;
+    while (T)
+    {
+      T = T->next;
+      res++;
+    }
+    return res;
+  }
+
+  //单链表合并保持相对有序
+  LinkList merge(LinkList L1, LinkList L2)
+  {
+    LinkList L;
+    Init(L);
+    LinkNode *Temp = L;
+    LinkNode *H1 = L1->next;
+    LinkNode *H2 = L2->next;
+    while (H1 && H2)
+    {
+      LinkNode *s;
+      s = (LinkNode *)malloc(sizeof(LinkNode));
+      if (H1 >= H2)
+      {
+        s->data = H2->data;
+        H2 = H2->next;
+      }
+      else
+      {
+        s->data = H1->data;
+        H1 = H1->next;
+      }
+      s->next = Temp->next;
+      Temp->next = s->next;
+      Temp = s;
+    }
+    LinkNode *E = H1 == nullptr ? H2 : H1;
+    Temp->next = E;
+    return L;
+  }
 
   std::ostream &operator<<(std::ostream &out, LinkList L)
   {
-        LinkNode *temp = L->next;
+    LinkNode *temp = L->next;
     while (temp)
     {
       out << temp->data << " ";
